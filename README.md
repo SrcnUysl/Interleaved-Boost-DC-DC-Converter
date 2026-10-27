@@ -118,6 +118,18 @@ The `.slx` model and simulation schematics were not executed or independently ve
 - Bode analysis and transient-load tests
 - Layout visualization and design-for-integration considerations
 
+## Project Team & Contributors
+
+This project was developed collaboratively. The team members are listed below.
+
+| Team member | GitHub |
+|---|---|
+| Arda Sercan Uysal | [@SrcnUysl](https://github.com/SrcnUysl) |
+| Ahmet Eren Ortak | [@ahmeterenortak](https://github.com/ahmeterenortak) |
+| Mert Mutlu | [@GaziOsmanPasha](https://github.com/GaziOsmanPasha) |
+
+Contributor names here acknowledge project participation; GitHub's automatically generated **Contributors** statistics are based on commit history.
+
 ## Attribution and reuse
 
 This portfolio contains simulation models, visualizations, and engineering materials prepared in a collaborative technical setting. Inclusion here does not imply sole authorship of each item or authorize unrestricted third-party redistribution. Any reuse must comply with the applicable ownership and permission requirements.
