@@ -48,6 +48,58 @@ The analog model uses Type-II compensation; both models are intended to explore 
 
 ![ACMC control architecture](images/control/acmc_block_diagram.png)
 
+### Analog Type-II Compensation Design
+
+The analog implementation employs a cascaded Average Current Mode Control (ACMC) architecture, consisting of two independent inner current-control loops and an outer voltage-control loop. All three loops utilize operational amplifier-based Type-II compensators to improve stability, steady-state regulation, and transient performance.
+
+A Type-II compensator introduces an integrator, a zero, and a high-frequency pole. The integrator provides high low-frequency gain to minimize steady-state error, the zero contributes phase boost to improve stability, and the high-frequency pole limits the amplification of switching-related noise.
+
+The ideal compensator transfer function can be expressed as:
+
+$$G_c(s)=K\frac{1+s/\omega_z}{s(1+s/\omega_p)}$$
+
+where \(\omega_z\) and \(\omega_p\) represent the compensator zero and high-frequency pole, respectively.
+
+#### Inner Current-Loop Compensation
+
+Two identical Type-II compensators independently regulate the inductor currents of the interleaved phases. The current loops are designed to respond rapidly to current disturbances while maintaining stable operation.
+
+The implemented compensation networks use the following component values:
+
+| Parameter | Value |
+|---|---|
+| Compensation resistor | 1.6 kΩ |
+| Series capacitor | 47 nF |
+| Parallel capacitor | 2.2 nF |
+| Approximate zero frequency | 2.12 kHz |
+| Approximate high-frequency pole | 47.3 kHz |
+
+The compensation zero provides phase boost in the current-loop frequency range, while the high-frequency pole limits the compensator gain at higher frequencies.
+
+#### Outer Voltage-Loop Compensation
+
+The outer voltage loop regulates the converter output by generating the reference for the inner current-control loops. Its intended bandwidth is lower than that of the current loops, allowing the inner controllers to respond more rapidly to current disturbances.
+
+The implemented voltage-loop compensation network consists of:
+
+| Parameter | Value |
+|---|---|
+| Compensation resistor | 17 kΩ |
+| Series capacitor | 300 nF |
+| Parallel capacitor | 1.2 nF |
+| Approximate zero frequency | 31.2 Hz |
+| Approximate high-frequency pole | 7.83 kHz |
+
+The low-frequency compensator zero supports voltage regulation and contributes phase boost, while the high-frequency pole attenuates high-frequency disturbances.
+
+#### Compensation Design Considerations
+
+The compensation networks were developed to provide a bandwidth separation between the inner current loops and the outer voltage loop. This cascaded structure enables the current controllers to handle rapid current variations while the slower voltage controller maintains the regulated output.
+
+The zero and pole frequencies reported above are calculated from the ideal RC compensation networks. Actual loop crossover frequencies and phase margins depend on the complete converter dynamics and must be evaluated through small-signal frequency-response analysis.
+
+The final compensation networks are implemented in the LTspice analog control model, allowing their behavior to be evaluated under different operating conditions.
+
 ### Frequency-domain analysis
 
 The small-signal tuning methodology examines **crossover frequency**, **phase margin**, and the relative bandwidths of the current and voltage loops. The following figure illustrates the frequency response of the inner-current and outer-voltage control loops:
