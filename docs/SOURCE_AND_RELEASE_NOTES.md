@@ -1,8 +1,7 @@
-# Source attribution and public release notes
+# Source and release notes
 
-- Files are bundled for technical portfolio review.
-- Obtain authorization from all relevant co-authors, employers, institutions, or project sponsors before making jointly owned source models or images publicly downloadable.
-- Check vendor model licenses before distributing embedded simulation components.
-- Do not publish unpublished collaborative manuscripts without permission. The full conference PDF is excluded from this bundle.
-- This release intentionally omits native PCB CAD source, STEP files, and firmware.
-- Removing an organization's name from a README does not change underlying confidentiality or ownership obligations.
+- This repository presents simulation, control design, and PCB-layout visualizations for a technical engineering portfolio.
+- Verify ownership, attribution, and public-redistribution permissions for collaboratively developed models, source files, and figures.
+- Review applicable vendor licenses before redistributing device models or embedded simulation libraries.
+- Native PCB CAD files, STEP models, and firmware source files are not included in this public repository.
+- Public availability does not by itself grant unrestricted reuse rights.
