@@ -1,13 +1,13 @@
 # Reproducibility and revision notes
 
-The repository combines **more than one development iteration**. Do not assume each source file directly reproduces every plot in the README or the comparative study.
+The repository combines **more than one development iteration**. Do not assume each source file directly reproduces every plot in the README or each comparison shown.
 
-- **Comparative simulation-study configuration:** two-phase coupled-inductor boost; nominal 14 V in, 28 V out, 280 W; 100 kHz switching; 10 kHz and 550 Hz design crossover frequencies; multi-rate digital inner / outer sampling of 10 µs / 100 µs.
+- **Simulation comparison configuration:** two-phase coupled-inductor boost; nominal 14 V in, 28 V out, 280 W; 100 kHz switching; 10 kHz and 550 Hz design crossover frequencies; multi-rate digital inner / outer sampling of 10 µs / 100 µs.
 - **Uploaded MATLAB `parametre.m` configuration:** nominal 14 V in, **24 V out, 240 W**, `Llk=3e-6 H`, `Co=754e-6 F`. The script computes continuous-time loop gains and Tustin coefficients.
-- **Simulink `.slx`:** supplied binary model from a separate snapshot. Parameters and block dependencies must be checked in MATLAB/Simulink before running. `parametre.m` is not asserted to initialize the model with the final comparison conditions without modification.
+- **Simulink `.slx`:** supplied binary model from a separate snapshot. Parameters and block dependencies must be checked in MATLAB/Simulink before running. `parametre.m` is not asserted to initialize the model with the corresponding simulation conditions without modification.
 - **LTspice `.asc`:** two original schematic variants. One uses UTF-16LE; preserving the original encoding avoids inadvertent schematic changes. LTspice device-model availability is environment-dependent.
 - **Plots:** derived from supplied exported results, not regenerated in this repository. No transient/ripple numbers are independently measured or verified here.
-- **Paper figures:** diagram and Bode-plot crops taken from a supplied collaborative draft for illustration. The full paper is intentionally not distributed with this package.
+- **Control figures:** the architecture diagram and Bode plots illustrate the control analysis. Redistribution rights for collaboratively prepared illustrations should be checked.
 
 ## Reproducing analyses
 
