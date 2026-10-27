@@ -4,7 +4,7 @@
 
 A technical portfolio covering the **modeling, controller design, and simulation** of a two-phase coupled-inductor interleaved boost DC–DC converter. The repo includes editable **LTspice** schematics, a **Simulink** model, a **MATLAB** parameter/control-design script, and selected simulation plots.
 
-> **Scope:** The performance figures shown here are from *simulation*, not hardware validation or certified compliance. This repository combines materials from different development iterations; individual files do not necessarily use an identical set of parameters. Publication permissions for third-party or collaboratively owned materials should be confirmed before making this repository public.
+> **Scope:** The performance figures shown here are from *simulation*, not hardware validation or certified compliance. This repository combines materials from different development iterations; individual files do not necessarily use an identical set of parameters. Sharing and reuse of collaboratively developed materials are subject to the applicable permissions.
 
 ## Project at a glance
 
@@ -19,7 +19,7 @@ A technical portfolio covering the **modeling, controller design, and simulation
 | Digital model | MATLAB/Simulink, digital PI compensation |
 | Digital sampling | Inner loop 10 µs; outer loop 100 µs |
 
-The values above describe the **comparison reported in the accompanying simulation study**, *not every source-file revision*. For example, the uploaded `parametre.m` script initializes a **14 V → 24 V, 240 W** variant, with 3 µH leakage inductance. See [Reproducibility and revision notes](docs/REPRODUCIBILITY.md) before running or comparing results.
+The values above describe **one simulation comparison configuration**, *not every source-file revision*. For example, the uploaded `parametre.m` script initializes a **14 V → 24 V, 240 W** variant, with 3 µH leakage inductance. See [Reproducibility and revision notes](docs/REPRODUCIBILITY.md) before running or comparing results.
 
 ## PCB design overview
 
@@ -50,7 +50,7 @@ The analog model uses Type-II compensation; both models are intended to explore 
 
 ### Frequency-domain analysis
 
-The small-signal tuning methodology examines **crossover frequency**, **phase margin**, and the relative bandwidths of the current and voltage loops. The following plot is a cropped figure from the collaborative comparative study (authors credited below):
+The small-signal tuning methodology examines **crossover frequency**, **phase margin**, and the relative bandwidths of the current and voltage loops. The following figure illustrates the frequency response of the inner-current and outer-voltage control loops:
 
 ![Inner-current and outer-voltage Bode plots](images/control/controller_bode_plots.png)
 
@@ -82,14 +82,14 @@ Example 14 V ripple waveform:
 
 ### Analog-versus-digital comparison
 
-The supplied comparative study reports the following **simulated** load-decrease transient metrics at the **14 V nominal input**:
+The available simulation results report the following **load-decrease transient metrics** at the **14 V nominal input**:
 
 | Metric | Analog ACMC | Digital ACMC |
 |---|---:|---:|
 | Overshoot | 8.39% | 7.14% |
 | Recovery time | 3.28 ms | 2.05 ms |
 
-These are **reported study results**, not measurements from a fabricated converter. Results must not be interpreted as independent certification to MIL-STD-704F or any other standard.
+These are **simulated results**, not measurements from a fabricated converter. Results must not be interpreted as independent certification to MIL-STD-704F or any other standard.
 
 ## Source files and usage
 
@@ -118,8 +118,8 @@ The `.slx` model and simulation schematics were not executed or independently ve
 - Bode analysis and transient-load tests
 - Layout visualization and design-for-integration considerations
 
-## Authorship and reuse
+## Attribution and reuse
 
-The control-architecture and Bode-plot figures were taken from the supplied collaborative manuscript, *Analog and Digital Average Current Mode Control for a 280 W Coupled-Inductor Interleaved Boost Converter: A Comparative Simulation Study*, by **Ahmet Eren Ortak, Mert Mutlu, Arda Sercan Uysal, Umut Baran Ekinci, and Derya Ahmet Kocabaş**. Publication and reuse rights must be verified before public redistribution.
+This portfolio contains simulation models, visualizations, and engineering materials prepared in a collaborative technical setting. Inclusion here does not imply sole authorship of each item or authorize unrestricted third-party redistribution. Any reuse must comply with the applicable ownership and permission requirements.
 
-This is an engineering portfolio built from materials supplied by a project participant and a collaborative simulation study. The documentation does not assert sole authorship of collaborative research or grant reuse rights to third-party content. No open-source license is assigned at this stage.
+No open-source license is assigned at this stage.
