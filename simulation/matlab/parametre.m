@@ -1,4 +1,4 @@
-%% liftup_init.m  (ideal, iki faz aynı)
+%% Converter control initialization (idealized, matched phases)
 
 % ========== Devre parametreleri ==========
 Vin  = 14;
