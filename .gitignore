@@ -1,0 +1,24 @@
+# MATLAB/Simulink generated files
+*.slxc
+*.asv
+*.autosave
+*.mlx.autosave
+slprj/
+codegen/
+*.m~
+*.mat
+*.mex*
+# LTspice output / temporary files
+*.raw
+*.log
+*.op.raw
+*.net
+*.plt
+*.bak
+# KiCad backup/autosave/cache files
+*-backups/
+*.kicad_prl
+*.lck
+# System files
+.DS_Store
+Thumbs.db

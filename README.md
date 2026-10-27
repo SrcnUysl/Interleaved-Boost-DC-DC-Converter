@@ -1,77 +1,125 @@
-# Interleaved Boost DC–DC Converter
+# Two-Phase Interleaved Boost DC–DC Converter
 
-### Power Electronics · Converter Modeling · Digital Control
+**Converter simulation • Digital control • Analog ACMC • MATLAB/Simulink • LTspice • PCB layout**
 
-A public-facing engineering portfolio overview focused on **two-phase interleaved boost conversion** and **digital control methods**. The repository presents the technical areas explored without exposing project-specific designs, measurements, source files, or other potentially restricted information.
+A technical portfolio covering the **modeling, controller design, and simulation** of a two-phase coupled-inductor interleaved boost DC–DC converter. The repo includes editable **LTspice** schematics, a **Simulink** model, a **MATLAB** parameter/control-design script, and selected simulation plots.
 
-> **Disclosure scope:** This is a high-level portfolio summary, **not** an open-source release of the underlying project. No confidential hardware, firmware, simulation models, proprietary specifications, or sponsor materials are included.
+> **Scope:** The performance figures shown here are from *simulation*, not hardware validation or certified compliance. This repository combines materials from different development iterations; individual files do not necessarily use an identical set of parameters. Publication permissions for third-party or collaboratively owned materials should be confirmed before making this repository public.
 
-## Engineering focus
+## Project at a glance
 
-| Area | Topics |
-| --- | --- |
-| Power conversion | Two-phase interleaved boost topology, switching behavior, passive-component considerations |
-| Control systems | Cascaded voltage/current regulation, PI control, loop interaction |
-| Digital control | Discrete-time PI implementation, Tustin (bilinear) discretization, output limiting and anti-windup |
-| Analysis | Transfer functions, Bode plots, crossover frequencies, gain and phase margins, transient response |
-| Design workflow | MATLAB/Simulink-based analysis; KiCad schematic, layout, and 3D review methodologies |
-| Embedded systems | PWM generation, ADC sampling, and control-loop scheduling concepts |
+| Item | Comparative study configuration |
+|---|---|
+| Topology | Two-phase, 180° interleaved boost with inversely coupled windings |
+| Output | 28 V DC, 280 W rated |
+| Input range | 12–28 V; nominal 14 V |
+| Switching frequency | 100 kHz |
+| Control | Cascaded average current-mode control (ACMC): two current loops and one voltage loop |
+| Analog model | LTspice, Type-II compensation |
+| Digital model | MATLAB/Simulink, digital PI compensation |
+| Digital sampling | Inner loop 10 µs; outer loop 100 µs |
 
-## Conceptual system architecture
+The values above describe the **comparison reported in the accompanying simulation study**, *not every source-file revision*. For example, the uploaded `parametre.m` script initializes a **14 V → 24 V, 240 W** variant, with 3 µH leakage inductance. See [Reproducibility and revision notes](docs/REPRODUCIBILITY.md) before running or comparing results.
 
-The following diagram is **illustrative**, rather than a reproduction of project-specific hardware or firmware.
+## PCB design overview
 
-```mermaid
-flowchart LR
-    Vin["DC input"] --> Stage["Two-phase interleaved boost power stage"]
-    Stage --> Vout["Regulated DC output"]
-    Vout --> SenseV["Voltage feedback"]
-    SenseV --> Vctrl["Outer voltage PI loop"]
-    Vctrl --> Ictrl["Inner current PI loops"]
-    Ictrl --> PWM["PWM generation"]
-    PWM --> Stage
-    Stage --> SenseI["Phase current feedback"]
-    SenseI --> Ictrl
-```
+The following design views are shared for illustration of the physical layout workflow; no native KiCad design files are included in this release.
 
-## Design and analysis methodology
+![3D PCB render](images/pcb/pcb_3d_render.png)
 
-### 1. Converter behavior
-- Study the switching operation and energy transfer of the interleaved boost topology.
-- Consider current ripple, phase relationships, magnetic components, and output filtering.
-- Evaluate the trade-offs between switching frequency, losses, and dynamic performance.
+<details><summary>More PCB views</summary>
 
-### 2. Cascaded control
-- Model the relevant converter dynamics using small-signal transfer functions.
-- Design the current loop before closing the outer voltage loop.
-- Use frequency-response analysis to inspect stability margins and loop bandwidth.
-- Assess reference tracking, disturbances, and controller limits.
+![PCB overview](images/pcb/pcb_layout_full.png)
+![PCB all layers](images/pcb/pcb_all_layers.png)
+![Copper pours](images/pcb/top_copper_pours.png)
+![Inner layer](images/pcb/inner_layer_view.png)
 
-### 3. Digital implementation
-- Convert continuous-time PI control laws to discrete time where appropriate.
-- Account for controller sampling periods, PWM timing, saturation, and anti-windup.
-- Compare idealized modeling assumptions against the constraints of an embedded implementation.
+</details>
 
-### 4. Verification workflow
-- Evaluate conceptual responses in simulation.
-- Document assumptions and operating conditions for each analysis.
-- Distinguish calculated or simulated results from physical measurements.
+## Control strategy
 
-## Repository contents
+A faster **inner current regulation loop** is nested within a slower **outer voltage regulation loop**. The digital PI implementation uses the **Tustin (bilinear)** discretization:
 
-This initial public release contains **documentation only**. Detailed models, CAD files, firmware, PCB layouts, numerical design parameters, and performance plots are intentionally excluded.
+$$u[k] = u[k-1] + q_0 e[k] + q_1 e[k-1]$$
 
-Any future additions will be reviewed for disclosure rights and accurate attribution before publication.
+$$q_0=K_p+\frac{K_iT_s}{2},\qquad q_1=-K_p+\frac{K_iT_s}{2}$$
 
-## Tools and technical areas
+The analog model uses Type-II compensation; both models are intended to explore transient response, regulation, and stability trade-offs.
 
-MATLAB · Simulink · KiCad · Power Electronics · Digital PI Control · Frequency-Domain Analysis · Embedded Control
+![ACMC control architecture](images/control/acmc_block_diagram.png)
 
-## Notes on publication and reuse
+### Frequency-domain analysis
 
-This summary discusses general engineering techniques. It does not assert that any particular hardware prototype was manufactured, tested, qualified, or publicly approved for technical release. No license is granted for underlying project materials.
+The small-signal tuning methodology examines **crossover frequency**, **phase margin**, and the relative bandwidths of the current and voltage loops. The following plot is a cropped figure from the collaborative comparative study (authors credited below):
 
----
+![Inner-current and outer-voltage Bode plots](images/control/controller_bode_plots.png)
 
-**Author:** [SrcnUysl](https://github.com/SrcnUysl)  
-**Purpose:** Engineering portfolio and technical overview.
+## Simulation results
+
+These plots come from the supplied simulation exports. The model settings should be verified before using them to reproduce the study comparison.
+
+### Output-voltage response at multiple input voltages
+
+| 12 V input | 14 V input |
+|---|---|
+| ![12 V filtered response](results/digital/12V/V12_Vout_Filtered.png) | ![14 V filtered response](results/digital/14V/V14_Vout_Filtered.png) |
+
+| 20 V input | 24 V input |
+|---|---|
+| ![20 V filtered response](results/digital/20V/V20_Vout_Filtered.png) | ![24 V filtered response](results/digital/24V/V24_Vout_Filtered.png) |
+
+### Detailed waveforms
+
+- [12 V input: currents, ripple, raw and filtered output](results/digital/12V)
+- [14 V input: currents, ripple, raw and filtered output](results/digital/14V)
+- [20 V input: currents, ripple, raw and filtered output](results/digital/20V)
+- [24 V input: currents, ripple, raw and filtered output](results/digital/24V)
+- [Additional high-resolution 14 V plots](results/additional)
+
+Example 14 V ripple waveform:
+
+![14 V output ripple](results/digital/14V/V14_VoutRipple.png)
+
+### Analog-versus-digital comparison
+
+The supplied comparative study reports the following **simulated** load-decrease transient metrics at the **14 V nominal input**:
+
+| Metric | Analog ACMC | Digital ACMC |
+|---|---:|---:|
+| Overshoot | 8.39% | 7.14% |
+| Recovery time | 3.28 ms | 2.05 ms |
+
+These are **reported study results**, not measurements from a fabricated converter. Results must not be interpreted as independent certification to MIL-STD-704F or any other standard.
+
+## Source files and usage
+
+| Directory | Files | Software |
+|---|---|---|
+| [`simulation/ltspice/`](simulation/ltspice) | `Analog_ACMC.asc`, `Analog_ACMC_variant.asc` | LTspice |
+| [`simulation/matlab/`](simulation/matlab) | `parametre.m` | MATLAB + Control System Toolbox |
+| [`simulation/simulink/`](simulation/simulink) | `Digital_ACMC.slx` | MATLAB/Simulink (required blocks/toolboxes may vary) |
+| [`results/digital/`](results/digital) | Digital simulation plots for 12, 14, 20, 24 V | PNG viewer |
+
+**Quick start:**
+
+1. Open an `.asc` file in LTspice and check that its referenced device libraries are available. Select the proper simulation command inside the schematic.
+2. Open MATLAB, inspect `simulation/matlab/parametre.m`, and run it to populate the workspace for that *script's* 24 V / 240 W configuration.
+3. Open `simulation/simulink/Digital_ACMC.slx` in Simulink. **Inspect and align all model parameters before running**; the supplied MATLAB script and Simulink model are not guaranteed to be matching final revisions.
+4. Compare outputs against the corresponding simulation figures only when operating conditions, load steps, and component values match.
+
+The `.slx` model and simulation schematics were not executed or independently verified in this environment.
+
+## Engineering methods illustrated
+
+- Coupled-inductor interleaved boost power stage
+- Small-signal modeling and transfer-function loop design
+- Nested PI regulators and average current-mode control
+- Digital Tustin discretization, sampling constraints, and anti-windup
+- Bode analysis and transient-load tests
+- Layout visualization and design-for-integration considerations
+
+## Authorship and reuse
+
+The control-architecture and Bode-plot figures were taken from the supplied collaborative manuscript, *Analog and Digital Average Current Mode Control for a 280 W Coupled-Inductor Interleaved Boost Converter: A Comparative Simulation Study*, by **Ahmet Eren Ortak, Mert Mutlu, Arda Sercan Uysal, Umut Baran Ekinci, and Derya Ahmet Kocabaş**. Publication and reuse rights must be verified before public redistribution.
+
+This is an engineering portfolio built from materials supplied by a project participant and a collaborative simulation study. The documentation does not assert sole authorship of collaborative research or grant reuse rights to third-party content. No open-source license is assigned at this stage.
